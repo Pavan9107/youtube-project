@@ -12,3 +12,5 @@ create branch
 git branch name
 git push -u origin name
 
+git diff --name-status dev stage
+This shows which files differ between dev and stage.
