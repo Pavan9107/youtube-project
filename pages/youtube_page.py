@@ -6,6 +6,7 @@ class YoutubePage(BasePage):
 
     search_box = (By.NAME, 'search_query')
     search_button = (By.XPATH, "//button[@aria-label='Search']")
+    video_results = (By.XPATH, "//a[@id='video-title']")
 
     def open(self):
         self.driver.get("https://www.youtube.com")
@@ -19,4 +20,19 @@ class YoutubePage(BasePage):
 
     def get_title(self):
         return self.driver.title
+
+    def get_youtube_trailer(self):
+        results = self.wait.until(EC.presence_of_all_elements_located(self.video_results))
+        for result in results:
+            title = result.text.strip().lower()
+            if "trailer" in title:
+                print("clicking trailer", result.text)
+                result.click()
+                break
+        print(self.driver.current_url)
+        assert "trailer" in title
+        assert "watch" in self.driver.current_url
+
+
+
 
